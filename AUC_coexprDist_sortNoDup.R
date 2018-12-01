@@ -25,7 +25,7 @@ registerDoMC(ifelse(SSHFS, 2, 40))
 ### HARD CODED
 caller <- "TopDom"
 corMethod <- "pearson"
-buildTable <- FALSE
+buildTable <- TRUE
 # for plotting:
 # look at coexpression ~ distance up to distLimit bp
 distLimit <- 500 * 10^3
@@ -89,7 +89,7 @@ myWidth <- ifelse(plotType == "png", 600, 10)
 pipScriptDir <- paste0(setDir, "/mnt/ed4/marie/scripts/TAD_DE_pipeline_v2")
 source(paste0(pipScriptDir, "/", "TAD_DE_utils.R"))
 
-toprankingScriptDir <- paste0(setDir, "/mnt/ed4/marie/scripts/TAD_DE_pipeline_v2_topRanking")
+toprankingScriptDir <- paste0(setDir, "/mnt/etemp/marie/TAD_DE_pipeline_v2_topRanking")
 source(paste0(toprankingScriptDir, "/", "get_topTADs.R"))
 
 utilsDir <- paste0(setDir, "/mnt/ed4/marie/scripts/TAD_DE_pipeline_v2_coreg")
