@@ -50,7 +50,7 @@ registerDoMC(ifelse(SSHFS, 2, 40))
 ### HARD CODED
 caller <- "TopDom"
 corMethod <- "pearson"
-buildTable <- TRUE
+buildTable <- FALSE
 # for plotting:
 # look at coexpression ~ distance up to distLimit bp
 distLimit <- 500 * 10^3
@@ -108,12 +108,12 @@ printAndLog(txt, logFile)
 txt <- paste0("... fitMeth = ",  fitMeth, "\n")
 printAndLog(txt, logFile)
 
-mycols <- c("same TAD" ="darkorange1" , "diff. TAD"="darkslateblue",  "diff Strand + same TAD"="violetred1", "diff Strand + diff. TAD" = "lightskyblue")
+mycols <- c("same TAD" ="darkorange1" , "diff. TAD"="darkslateblue",  "diff. Strand + same TAD"="violetred1", "diff. Strand + diff. TAD" = "lightskyblue")
 
 sameTADcol <- mycols["same TAD"]
 diffTADcol <- mycols["diff. TAD"]
-diffStrandSameTADcol <- mycols["diff Strand + same TAD"]
-diffStrandDiffTADcol <- mycols["diff Strand + diff. TAD"]
+diffStrandSameTADcol <- mycols["diff. Strand + same TAD"]
+diffStrandDiffTADcol <- mycols["diff. Strand + diff. TAD"]
 
 plotType <- "svg"
 # myHeight <- ifelse(plotType == "png", 400, 7)
@@ -243,13 +243,19 @@ if(buildTable){
   
 }
 
+
+allData_dt$diffStrand <- as.numeric(!allData_dt$sameStrand)
+stopifnot(!is.na(allData_dt$diffStrand))
+allData_dt$sameStrand <- NULL
+
+
 nrow(allData_dt)
 allData_dt$dist_kb <- allData_dt$dist/1000
 
 allData_dt$curve1 <-  ifelse(allData_dt$sameTAD == "0", "diff. TAD", "same TAD")
 
 allData_dt$curve2 <-  ifelse(allData_dt$diffStrand == "0", NA,
-                             ifelse(allData_dt$sameTAD == "0", "diff Strand + diff. TAD", "diff Strand + same TAD"))
+                             ifelse(allData_dt$sameTAD == "0", "diff. Strand + diff. TAD", "diff. Strand + same TAD"))
 
 sameTAD_DT <- allData_dt[allData_dt$sameTAD == 1,c("gene1", "gene2", "coexpr", "dist", "dist_kb")]
 sameTAD_DT <- na.omit(sameTAD_DT)
@@ -265,23 +271,21 @@ diffTAD_DT <- diffTAD_DT[order(diffTAD_DT$dist_kb),]
 diffTAD_DT$nPair <- 1:nrow(diffTAD_DT)
 diffTAD_DT$label <- "diff. TAD"
 
-allData_dt$diffStrand <- as.numeric(!allData_dt$sameStrand)
-stopifnot(!is.na(allData_dt$diffStrand))
-allData_dt$sameStrand <- NULL
+
 
 diffStrand_sameTAD_DT <- allData_dt[allData_dt$diffStrand == 1 & allData_dt$sameTAD == 1 ,c("gene1", "gene2", "coexpr", "dist",  "dist_kb")]
 diffStrand_sameTAD_DT <- na.omit(diffStrand_sameTAD_DT)
 diffStrand_sameTAD_DT <- diffStrand_sameTAD_DT[order(diffStrand_sameTAD_DT$dist_kb),]
 # diffStrand_sameTAD_DT$cumdist <- cumsum(diffStrand_sameTAD_DT$dist_kb)
 diffStrand_sameTAD_DT$nPair <- 1:nrow(diffStrand_sameTAD_DT)
-diffStrand_sameTAD_DT$label <- "diff Strand + same TAD"
+diffStrand_sameTAD_DT$label <- "diff. Strand + same TAD"
 
 diffStrand_diffTAD_DT <- allData_dt[allData_dt$diffStrand == 1 & allData_dt$sameTAD == 0 ,c("gene1", "gene2",  "coexpr", "dist", "dist_kb")]
 diffStrand_diffTAD_DT <- na.omit(diffStrand_diffTAD_DT)
 diffStrand_diffTAD_DT <- diffStrand_diffTAD_DT[order(diffStrand_diffTAD_DT$dist_kb),]
 # diffStrand_diffTAD_DT$cumdist <- cumsum(diffStrand_diffTAD_DT$dist_kb)
 diffStrand_diffTAD_DT$nPair <- 1:nrow(diffStrand_diffTAD_DT)
-diffStrand_diffTAD_DT$label <- "diff Strand + diff. TAD"
+diffStrand_diffTAD_DT$label <- "diff. Strand + diff. TAD"
 
 stopifnot(is.numeric(sameTAD_DT$dist[1]))
 stopifnot(is.numeric(sameTAD_DT$coexpr[1]))
