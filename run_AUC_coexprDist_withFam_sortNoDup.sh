@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#./run_AUC_coexprDist_withFam_sortNoDup.sh
+
 maxLoad="100"
 
 maxJobs=7

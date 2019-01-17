@@ -8,6 +8,9 @@ printAndLog <- function(text, logFile = ""){
   cat(text, append =T , file = logFile)
 }
 
+buildTable <- FALSE
+
+
 suppressPackageStartupMessages(library(foreach, warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE))
 suppressPackageStartupMessages(library(doMC, warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE))
 suppressPackageStartupMessages(library(ggpubr, warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE))
@@ -50,7 +53,6 @@ registerDoMC(ifelse(SSHFS, 2, 40))
 ### HARD CODED
 caller <- "TopDom"
 corMethod <- "pearson"
-buildTable <- TRUE
 # for plotting:
 # look at coexpression ~ distance up to distLimit bp
 distLimit <- 500 * 10^3
@@ -315,13 +317,16 @@ for(i_fam in all_familyData) {
     # PREDICT WITH ORIGINAL DISTANCE VALUES
     my_xlab <- paste0("Distance between the 2 genes (bp)")
     
-    smooth_vals_sameTAD <- predict(loess(coexpr ~ dist, data = sameTAD_DT), sort(sameTAD_DT$dist))
-    smooth_vals_diffTAD <- predict(loess(coexpr ~ dist, data = diffTAD_DT), sort(diffTAD_DT$dist))
+    sameTAD_mod <- loess(coexpr ~ dist, data = sameTAD_DT)
+    diffTAD_mod <- loess(coexpr ~ dist, data = diffTAD_DT)
+    
+    smooth_vals_sameTAD <- predict(sameTAD_mod, sort(sameTAD_DT$dist))
+    smooth_vals_diffTAD <- predict(diffTAD_mod, sort(diffTAD_DT$dist))
     
     auc_diffTAD_obsDist <- auc(x = sort(diffTAD_DT$dist), y = smooth_vals_diffTAD)
     auc_sameTAD_obsDist <- auc(x = sort(sameTAD_DT$dist), y = smooth_vals_sameTAD)
     
-    outFile <- file.path(outFold, paste0("sameTAD_diffTAD_loessFit_originalDist", ".", plotType))
+    outFile <- file.path(outFold, paste0(curr_dataset, "_sameTAD_diffTAD_loessFit_originalDist", ".", plotType))
     do.call(plotType, list(outFile, height = myHeight, width = myWidth))
     plot(NULL,
          xlim = range(allData_dt$dist), 
@@ -345,16 +350,12 @@ for(i_fam in all_familyData) {
     
     # PREDICT WITH DISTANCE VECTOR
     distVect <- seq(from=0, to = distLimit, length.out = nbrLoessPoints)
-    smooth_vals_sameTAD_distVect <- predict(loess(coexpr ~ dist, data = sameTAD_DT), distVect)
-    smooth_vals_diffTAD_distVect <- predict(loess(coexpr ~ dist, data = diffTAD_DT), distVect)
+    smooth_vals_sameTAD_distVect <- predict(sameTAD_mod, distVect)
+    smooth_vals_diffTAD_distVect <- predict(diffTAD_mod, distVect)
     
     auc_diffTAD_distVect <- auc(x = distVect, y = smooth_vals_diffTAD_distVect)
     auc_sameTAD_distVect <- auc(x = distVect, y = smooth_vals_sameTAD_distVect)
     
-    diffTAD_mod <- loess(coexpr ~ dist, data = diffTAD_DT)
-    outFile <- file.path(outFold, "diffTAD_mod.Rdata")
-    save(diffTAD_mod, file = outFile)
-    cat(paste0("... written: ", outFile, "\n"))
     
     diffTAD_obsDist <- diffTAD_DT$dist
     outFile <- file.path(outFold, "diffTAD_obsDist.Rdata")
@@ -381,7 +382,7 @@ for(i_fam in all_familyData) {
     save(distVect, file = outFile)
     cat(paste0("... written: ", outFile, "\n"))
     
-    outFile <- file.path(outFold, paste0("sameTAD_diffTAD_loessFit_vectDist.", plotType))
+    outFile <- file.path(outFold, paste0(curr_dataset, "_sameTAD_diffTAD_loessFit_vectDist.", plotType))
     do.call(plotType, list(outFile, height = myHeight, width = myWidth))
     plot(NULL,
          xlim = range(distVect), 
@@ -409,14 +410,16 @@ for(i_fam in all_familyData) {
     
     ################################ DO THE SAME FOR SAME FAM SAME TAD VS. SAME FAM DIFF TAD
     
+    sameFamSameTAD_mod <- loess(coexpr ~ dist, data = sameFam_sameTAD_DT)
+    sameFamDiffTAD_mod <- loess(coexpr ~ dist, data = sameFam_diffTAD_DT)
     
-    smooth_vals_sameFamSameTAD <- predict(loess(coexpr ~ dist, data = sameFam_sameTAD_DT), sort(sameFam_sameTAD_DT$dist))
-    smooth_vals_sameFamDiffTAD <- predict(loess(coexpr ~ dist, data = sameFam_diffTAD_DT), sort(sameFam_diffTAD_DT$dist))
+    smooth_vals_sameFamSameTAD <- predict(sameFamSameTAD_mod, sort(sameFam_sameTAD_DT$dist))
+    smooth_vals_sameFamDiffTAD <- predict(sameFamDiffTAD_mod, sort(sameFam_diffTAD_DT$dist))
     
     auc_sameFamDiffTAD_obsDist <- auc(x = sort(sameFam_diffTAD_DT$dist), y = smooth_vals_sameFamDiffTAD)
     auc_sameFamSameTAD_obsDist <- auc(x = sort(sameFam_sameTAD_DT$dist), y = smooth_vals_sameFamSameTAD)
     
-    outFile <- file.path(outFold, paste0("sameFamsameTAD_sameFamDiffTAD_loessFit_originalDist", ".", plotType))
+    outFile <- file.path(outFold, paste0(curr_dataset, "_sameFamsameTAD_sameFamDiffTAD_loessFit_originalDist", ".", plotType))
     do.call(plotType, list(outFile, height = myHeight, width = myWidth))
     plot(NULL,
          xlim = range(allData_dt$dist), 
@@ -440,16 +443,28 @@ for(i_fam in all_familyData) {
     cat(paste0("... written: ", outFile, "\n"))
     
     # PREDICT WITH DISTANCE VECTOR
-    smooth_vals_sameFamSameTAD_distVect <- predict(loess(coexpr ~ dist, data = sameFam_sameTAD_DT), distVect)
-    smooth_vals_sameFamDiffTAD_distVect <- predict(loess(coexpr ~ dist, data = sameFam_diffTAD_DT), distVect)
+    smooth_vals_sameFamSameTAD_distVect <- predict(sameFamSameTAD_mod, distVect)
+    smooth_vals_sameFamDiffTAD_distVect <- predict(sameFamDiffTAD_mod, distVect)
     
     auc_sameFamDiffTAD_distVect <- auc(x = distVect, y = smooth_vals_sameFamDiffTAD_distVect)
     auc_sameFamSameTAD_distVect <- auc(x = distVect, y = smooth_vals_sameFamSameTAD_distVect)
     
-    sameFamDiffTAD_mod <- loess(coexpr ~ dist, data = sameFam_diffTAD_DT)
+    outFile <- file.path(outFold, "diffTAD_mod.Rdata")
+    save(diffTAD_mod, file = outFile)
+    cat(paste0("... written: ", outFile, "\n"))
+    
+    outFile <- file.path(outFold, "sameTAD_mod.Rdata")
+    save(sameTAD_mod, file = outFile)
+    cat(paste0("... written: ", outFile, "\n"))
+    
     outFile <- file.path(outFold, "sameFamDiffTAD_mod.Rdata")
     save(sameFamDiffTAD_mod, file = outFile)
     cat(paste0("... written: ", outFile, "\n"))
+    
+    outFile <- file.path(outFold, "sameFamSameTAD_mod.Rdata")
+    save(sameFamSameTAD_mod, file = outFile)
+    cat(paste0("... written: ", outFile, "\n"))
+    
     
     sameFamDiffTAD_obsDist <- sameFam_diffTAD_DT$dist
     outFile <- file.path(outFold, "sameFamDiffTAD_obsDist.Rdata")
@@ -472,7 +487,7 @@ for(i_fam in all_familyData) {
     save(smooth_vals_sameFamDiffTAD_distVect, file = outFile)
     cat(paste0("... written: ", outFile, "\n"))
     
-    outFile <- file.path(outFold, paste0("sameFamSameTAD_sameFamDiffTAD_loessFit_vectDist.", plotType))
+    outFile <- file.path(outFold, paste0(curr_dataset, "_sameFamSameTAD_sameFamDiffTAD_loessFit_vectDist.", plotType))
     do.call(plotType, list(outFile, height = myHeight, width = myWidth))
     plot(NULL,
          xlim = range(distVect), 
@@ -496,7 +511,7 @@ for(i_fam in all_familyData) {
     cat(paste0("... written: ", outFile, "\n"))
     
     ################################################################ 
-    outFile <- file.path(outFold, paste0("sameTAD_diffTAD_sameFamSameTAD_sameFamDiffTAD_loessFit_vectDist.", plotType))
+    outFile <- file.path(outFold, paste0(curr_dataset, "_sameTAD_diffTAD_sameFamSameTAD_sameFamDiffTAD_loessFit_vectDist.", plotType))
     do.call(plotType, list(outFile, height = myHeight, width = myWidth))
     plot(NULL,
          xlim = range(distVect), 

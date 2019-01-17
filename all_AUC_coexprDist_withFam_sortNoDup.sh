@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 
-# ./all_AUC_coexprDist_sortNoDup.sh
+# ./all_AUC_coexprDist_withFam_sortNoDup.sh
 
 start_time=$(date -R)   
 
-script_name="AUC_coexprDist_sortNoDup.R"
+script_name="AUC_coexprDist_withFam_sortNoDup.R"
 
 
 # Rscript AUC_coexprDist_sortNoDup.R GSE81046_noninf_list
@@ -50,10 +50,10 @@ script_name="AUC_coexprDist_sortNoDup.R"
 #"TCGAthca_mut.RAS_mutBRAF"
 #"TCGAucec_msi_cnl"
 #)
-#all_data=(
-#"TCGAbrca_lum_bas"
+all_data=(
+"TCGAbrca_lum_bas"
 #"TCGAcoad_msi_mss"
-#)
+)
 
 
 
@@ -194,8 +194,8 @@ script_name="AUC_coexprDist_sortNoDup.R"
 #############################################################
 for data in "${all_data[@]}"; do
     echo "> START for $data"
-	echo Rscript $script_name $data
-	Rscript $script_name $data
+	echo Rscript $script_name $data "hgnc"
+	Rscript $script_name $data "hgnc"
 done
 
 

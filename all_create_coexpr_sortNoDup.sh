@@ -2,22 +2,98 @@
 
 # ./all_create_coexpr_sortNoDup.sh
 
+# Rscript create_coexpr_sortNoDup.R GSE81046_noninf_list
+# Rscript create_coexpr_sortNoDup.R GSE81046_noninf_salm
+# Rscript create_coexpr_sortNoDup.R GSE81046_salm_list
+
 start_time=$(date -R)   
 
 script_name="create_coexpr_sortNoDup.R"
  
 #############################################################
 
-# new datasets
-all_data=(
-#"TCGAcesc_adeno_squam" 
-"TCGAhnsc_HPVneg_HPVpos" 
-"TCGAlgg_IDHwt_IDHmutnc" 
-"TCGAsarc_ddlps_lms" 
-"TCGAsarc_ddlps_mfs" 
-"TCGAsarc_lms_mfs" 
-"TCGAtgct_sem_nonsem" 
-)
+
+### TCGA datasets 08.12.2018
+##all_data=(
+#"TCGAacc_wt_mutCTNNB1"
+#"TCGAblca_norm_blca"
+##"TCGAbrca_lum_bas lum bas"
+#"TCGAcesc_adeno_squam"
+##"TCGAcoad_msi_mss msi mss"
+#"TCGAgbm_classical_neural"
+#"TCGAgbm_classical_proneural"
+#"TCGAgbm_classical_mesenchymal"
+#"TCGAhnsc_HPVneg_HPVpos"
+#"TCGAkich_norm_kich"
+#"TCGAlaml_wt_mutFLT3"
+#"TCGAlgg_IDHwt_IDHmutnc"
+#"TCGAlihc_wt_mutCTNNB1"
+#"TCGAluad_mutKRAS_mutEGFR"
+#"TCGAluad_nonsmoker_smoker nonsmoker smoker"
+#"TCGAluad_wt_mutKRAS"
+#"TCGAlusc_norm_lusc"
+#"TCGApaad_wt_mutKRAS"
+#"TCGAsarc_ddlps_lms"
+#"TCGAsarc_ddlps_mfs"
+#"TCGAsarc_lms_mfs"
+#"TCGAskcm_lowInf_highInf"
+#"TCGAskcm_wt_mutBRAF"
+#"TCGAskcm_wt_mutCTNNB1"
+#"TCGAthca_wt_mutBRAF"
+#"TCGAstad_EBVpos_gs"
+#"TCGAstad_msi_gs"
+#"TCGAstad_norm_gs"
+#"TCGAtgct_sem_nonsem"
+#"TCGAthca_mut.RAS_mutBRAF"
+#"TCGAucec_msi_cnl"
+#)
+
+#all_data=(
+            #"TCGAacc_wt_mutCTNNB1"
+            #"TCGAblca_norm_blca"
+            ##"TCGAbrca_lum_bas lum bas"
+            #"TCGAcesc_adeno_squam"
+            ##"TCGAcoad_msi_mss msi mss"
+            #"TCGAgbm_classical_neural"
+                #"TCGAgbm_classical_proneural"
+                #"TCGAgbm_classical_mesenchymal"
+                #"TCGAhnsc_HPVneg_HPVpos"
+                #"TCGAkich_norm_kich"
+                #"TCGAlaml_wt_mutFLT3"
+                #"TCGAlgg_IDHwt_IDHmutnc"
+                #"TCGAlihc_wt_mutCTNNB1"
+                #"TCGAluad_mutKRAS_mutEGFR"
+#                        "TCGAluad_nonsmoker_smoker"
+                        #"TCGAluad_wt_mutKRAS"
+                        #"TCGAlusc_norm_lusc"
+                        #"TCGApaad_wt_mutKRAS"
+                        #"TCGAsarc_ddlps_lms"
+                        #"TCGAsarc_ddlps_mfs"
+                        #"TCGAsarc_lms_mfs"
+                            #"TCGAskcm_lowInf_highInf"
+                            #"TCGAskcm_wt_mutBRAF"
+                            #"TCGAskcm_wt_mutCTNNB1"
+                            #"TCGAthca_wt_mutBRAF"
+                            #"TCGAstad_EBVpos_gs"
+                            #"TCGAstad_msi_gs"
+#"TCGAstad_norm_gs"
+#"TCGAtgct_sem_nonsem"
+#"TCGAthca_mut.RAS_mutBRAF"
+#"TCGAucec_msi_cnl"
+#)
+
+
+
+## new datasets
+#all_data=(
+##"TCGAcesc_adeno_squam" 
+#"TCGAhnsc_HPVneg_HPVpos" 
+#"TCGAlgg_IDHwt_IDHmutnc" 
+#"TCGAsarc_ddlps_lms" 
+#"TCGAsarc_ddlps_mfs" 
+#"TCGAsarc_lms_mfs" 
+#"TCGAtgct_sem_nonsem" 
+#)
 ## new datasets
 #all_data=(
 #"TCGAblca_norm_blca" 

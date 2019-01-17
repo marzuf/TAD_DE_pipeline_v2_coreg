@@ -58,3 +58,6 @@ score_DT$proc_col <- unlist(sapply(score_DT$process_short, function(x)
   my_colors[x]
 ))
 
+
+
+dataset_colors <- c(noTCGA_cancerDS = "darkorange", TCGA_cancerDS = "firebrick2", no_cancerDS="dodgerblue2")
