@@ -5,6 +5,8 @@
 # Rscript create_coexpr_sortNoDup.R GSE81046_noninf_list
 # Rscript create_coexpr_sortNoDup.R GSE81046_noninf_salm
 # Rscript create_coexpr_sortNoDup.R GSE81046_salm_list
+# Rscript create_coexpr_sortNoDup.R TCGAprad_norm_prad
+
 
 start_time=$(date -R)   
 
@@ -12,6 +14,7 @@ script_name="create_coexpr_sortNoDup.R"
  
 #############################################################
 
+all_data=( "TCGAprad_norm_prad" )
 
 ### TCGA datasets 08.12.2018
 ##all_data=(

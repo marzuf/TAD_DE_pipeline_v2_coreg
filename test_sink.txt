@@ -1,0 +1,7 @@
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00    1.75    3.50    3.25    4.25    6.00 
+[1] "\n"
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00    1.75    3.50    3.25    4.25    6.00 
+
+*** chr1_TAD150*** 

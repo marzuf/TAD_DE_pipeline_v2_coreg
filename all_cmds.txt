@@ -1,0 +1,51 @@
+Rscript coexpr_dist.R TCGAcrc_msi_mss 50 hgnc 
+
+Rscript tad_pairs.R TCGAcrc_msi_mss 50 hgnc
+
+Rscript pair_counts_Fisher.R TCGAcrc_msi_mss 50 hgnc
+
+Rscript pair_counts_Fisher_heatmap.R TCGAcrc_msi_mss 50 10 hgnc
+# -> requires pair_counts_Fisher
+
+Rscript cor_TAD_adjTAD.R TCGAcrc_msi_mss
+
+Rscript covar_TAD_adjTAD.R TCGAcrc_msi_mss
+
+Rscript cor_TAD_adjTAD_families.R TCGAcrc_msi_mss 50 hgnc
+
+Rscript zscores_var.R TCGAcrc_msi_mss
+
+########################################################################
+
+Rscript coexpr_dist.R GSE102073_stic_nostic 50 hgnc -> ok
+
+Rscript tad_pairs.R GSE102073_stic_nostic 50 hgnc -> ok
+
+Rscript pair_counts_Fisher.R GSE102073_stic_nostic 50 hgnc -> ok
+
+Rscript cor_TAD_adjTAD_families.R GSE102073_stic_nostic 50 hgnc -> ok
+
+Rscript cor_TAD_adjTAD.R GSE102073_stic_nostic -> ok
+
+Rscript covar_TAD_adjTAD.R GSE102073_stic_nostic -> ok
+
+Rscript pair_counts_Fisher_heatmap.R GSE102073_stic_nostic 50 10 hgnc -> ok
+# -> requires pair_counts_Fisher
+
+Rscript zscores_var.R GSE102073_stic_nostic -> ok
+
+
+########################################################################
+
+
+GSE74927_neg_pos
+
+Rscript coexpr_dist_v2.R GSE74927_neg_pos hgnc 
+
+Rscript coexpr_dist_v2.R TCGAcrc_msi_mss hgnc 
+
+Rscript coexpr_dist_v2.R GSE102073_stic_nostic hgnc 
+
+
+
+

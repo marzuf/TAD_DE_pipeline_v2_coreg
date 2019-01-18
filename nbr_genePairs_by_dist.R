@@ -24,7 +24,7 @@ stopifnot(length(args) == 1)
 hicds <- ""
 exprds <- args[1]
 
-outFold <- file.path("NBR_GENEPAIRS_BY_DIST", exprds)
+outFold <- file.path("../TAD_DE_pipeline_v2_TopDom/NBR_GENEPAIRS_BY_DIST", exprds)
 dir.create(outFold, recursive = TRUE)
 
 logFile <- file.path(outFold, paste0(exprds, "_nbrGenePairsByDist_logFile.txt"))
@@ -36,6 +36,8 @@ foldSuffix <- paste0("_40kb")
 family <- "hgnc"
 familydata <- "family_short"
 distLim <- 500
+
+cat("logFile = ", logFile, "\n")
 
 txt <- paste0("!!! HARD-CODED SETTINGS !!!\n")
 printAndLog(txt, logFile)

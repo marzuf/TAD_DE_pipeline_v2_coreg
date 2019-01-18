@@ -10,11 +10,13 @@ script_name="AUC_coexprDist_sortNoDup.R"
 # Rscript AUC_coexprDist_sortNoDup.R GSE81046_noninf_list
 # Rscript AUC_coexprDist_sortNoDup.R GSE81046_noninf_salm
 # Rscript AUC_coexprDist_sortNoDup.R GSE81046_salm_list
+# Rscript AUC_coexprDist_sortNoDup.R TCGAprad_norm_prad
 
 # Rscript AUC_coexprDist_withFam_sortNoDup.R GSE81046_noninf_list hgnc
 # Rscript AUC_coexprDist_withFam_sortNoDup.R GSE81046_noninf_salm hgnc
 # Rscript AUC_coexprDist_withFam_sortNoDup.R GSE81046_salm_list hgnc
- 
+# Rscript AUC_coexprDist_withFam_sortNoDup.R TCGAprad_norm_prad
+
 #############################################################
 
 #all_data=(
